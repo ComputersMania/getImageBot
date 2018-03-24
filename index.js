@@ -2,10 +2,8 @@ const Telegraf = require('telegraf')
 
 let bot = new Telegraf(process.env.BOT_TOKEN)
 
-//bot.telegram.setWebHook(process.env.URI + ':' + process.env.WEBHOOK)
+bot.telegram.setWebhook(process.env.URI + ':' + process.env.PORT + process.env.WEBHOOK)
 
-//bot.telegram.startWebHook(process.env.WEBHOOK, process.env.PORT)
-
-
-console.log(process.env.PORT)
-console.warn(typeof process.env.PORT)
+require('http')
+  .createServer( bot.webhookCallback(process.env.WEBHOOK) )
+  .listen(process.env.PORT)
