@@ -11,5 +11,10 @@ require('http')
   .listen(process.env.PORT)
 
 bot.use( ctx => {
-  console.log(ctx)
+  console.log(ctx.update.message.text)
+})
+
+bot.command('/get', ctx => {
+  let target = ctx.update.message.text.substr(5)
+  ctx.reply( 'You are searching for ' + target )
 })
