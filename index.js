@@ -10,9 +10,9 @@ require('http')
   .createServer( bot.webhookCallback(process.env.WEBHOOK) )
   .listen(process.env.PORT)
 
-bot.use( ctx => {
-  console.log(ctx.update.message.text)
-})
+//bot.use( ctx => {
+//  console.log(ctx.update.message.text)
+//})
 
 bot.command('/get', ctx => {
   let target = ctx.update.message.text.substr(5)
