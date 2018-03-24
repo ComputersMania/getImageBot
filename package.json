@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/ComputersMania/getImageBot#readme",
   "dependencies": {
-    "http": "0.0.0",
     "telegraf": "^3.20.0"
   }
 }
