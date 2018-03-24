@@ -9,3 +9,7 @@ bot.telegram.setWebhook(process.env.URI + process.env.WEBHOOK)
 require('http')
   .createServer( bot.webhookCallback(process.env.WEBHOOK) )
   .listen(process.env.PORT)
+
+bot.use( ctx => {
+  console.log(ctx)
+})
