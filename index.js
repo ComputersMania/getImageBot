@@ -43,7 +43,6 @@ bot.command('/get', ctx => {
   getImage(target).then( image => {
     ctx.replyWithPhoto(image, {
       reply_to_message_id: ctx.message.message_id
-    })
-    console.log('Replied')
+    }).then(console.log('Replied'))  
   })
 })
