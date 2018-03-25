@@ -2,6 +2,17 @@ const Telegraf = require('telegraf')
 
 let bot = new Telegraf(process.env.BOT_TOKEN)
 
+if (process.env.NODE_ENV == 'production'){
+  console.log('The webhook is at ' + process.env.URI + process.env.WEBHOOK)
+  require('http')
+  .createServer( bot.webhookCallback(process.env.WEBHOOK) )
+  .listen(process.env.PORT)
+
+  bot.telegram.setWebhook(process.env.URI + process.env.WEBHOOK)
+} else {
+  bot.telegram.setWebhook()
+  bot.startPolling()
+}
 
 // Google api integration section
 const {google} = require('googleapis')
@@ -31,23 +42,15 @@ let getImage = async (query) => {
 
 bot.command('/get', ctx => {
   let target = ctx.update.message.text.substr(5)
+  console.log(ctx.from.username + ' searched ' + target)
   getImage(target).then( image => {
-    ctx.replyWithPhoto(image).catch( (err) => {
+    ctx.replyWithPhoto(image, {
+      reply_to_message_id: ctx.message.message_id
+    }).catch( (err) => {
       console.error(err)
-      ctx.reply('Your image is too heavy')
-      ctx.reply( image )
+      ctx.reply(image, {
+        reply_to_message_id: ctx.message.message_id
+      })
     })
   })
 })
-
-if (process.env.NODE_ENV == 'production'){
-  console.log('The webhook is at ' + process.env.URI + process.env.WEBHOOK)
-  require('http')
-  .createServer( bot.webhookCallback(process.env.WEBHOOK) )
-  .listen(process.env.PORT)
-
-  bot.telegram.setWebhook(process.env.URI + process.env.WEBHOOK)
-} else {
-  bot.telegram.setWebhook()
-  bot.startPolling()
-}
