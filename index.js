@@ -41,8 +41,6 @@ bot.command('/get', ctx => {
   console.log('Searched ' + target)
   console.log(ctx.message)
   getImage(target).then( image => {
-    ctx.replyWithPhoto(image, {
-      reply_to_message_id: ctx.message.message_id
-    }).then(console.log)  
+    ctx.replyWithPhoto(image).then(console.log)
   })
 })
