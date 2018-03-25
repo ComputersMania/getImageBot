@@ -38,8 +38,6 @@ let getImage = async (query) => {
 
 bot.command('/get', ctx => {
   let target = ctx.update.message.text.substr(5)
-  console.log('Searched ' + target)
-  console.log(ctx.message)
   getImage(target).then( image => {
     ctx.replyWithPhoto(image).then(console.log)
     ctx.reply(image)
