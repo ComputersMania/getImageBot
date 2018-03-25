@@ -39,7 +39,7 @@ let getImage = async (query) => {
     safe: safe,
     searchType: 'image'
   }).catch( err => {throw(err)} )
-  console.log('Image found')
+  console.log('Image found at ' + res.data.items[0].link)
   return res.data.items[0].link
 }
 
@@ -47,12 +47,13 @@ bot.command('/get', ctx => {
   let target = ctx.update.message.text.substr(5)
   console.log(ctx.from.username + ' searched ' + target)
   getImage(target).then( image => {
+    ctx.reply(image)
     ctx.replyWithPhoto(image, {
-      //reply_to_message_id: ctx.message.message_id
+      reply_to_message_id: ctx.message.message_id
     }).catch( (err) => {
       console.error(err)
       ctx.reply(image, {
-        //reply_to_message_id: ctx.message.message_id
+        reply_to_message_id: ctx.message.message_id
       })
     })
   })
