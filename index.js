@@ -42,5 +42,6 @@ bot.command('/get', ctx => {
   console.log(ctx.message)
   getImage(target).then( image => {
     ctx.replyWithPhoto(image).then(console.log)
+    ctx.reply(image)
   })
 })
