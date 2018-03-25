@@ -16,5 +16,6 @@ require('http')
 
 bot.command('/get', ctx => {
   let target = ctx.update.message.text.substr(5)
+  console.log(target)
   ctx.reply( 'You are searching for ' + target )
 })
