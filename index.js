@@ -3,12 +3,13 @@ const Telegraf = require('telegraf')
 let bot = new Telegraf(process.env.BOT_TOKEN)
 
 if (process.env.NODE_ENV == 'production'){
+  bot.telegram.setWebhook(process.env.URI + process.env.WEBHOOK)
   console.log('The webhook is at ' + process.env.URI + process.env.WEBHOOK)
+
   require('http')
   .createServer( bot.webhookCallback(process.env.WEBHOOK) )
   .listen(process.env.PORT)
 
-  bot.telegram.setWebhook(process.env.URI + process.env.WEBHOOK)
 } else {
   bot.telegram.setWebhook()
   bot.startPolling()
@@ -37,6 +38,7 @@ let getImage = async (query) => {
     safe: safe,
     searchType: 'image'
   }).catch( err => {throw(err)} )
+  console.log('Image found')
   return res.data.items[0].link
 }
 
