@@ -42,7 +42,9 @@ bot.command('/get', ctx => {
   console.log(ctx.from)
   getImage(target).then( image => {
     ctx.replyWithPhoto(null, {
+
       photo: image
     })
+    console.log('Replied')
   })
 })
