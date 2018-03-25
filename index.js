@@ -2,13 +2,6 @@ const Telegraf = require('telegraf')
 
 let bot = new Telegraf(process.env.BOT_TOKEN)
 
-console.log('The webhook is at ' + process.env.URI + process.env.WEBHOOK)
-
-bot.telegram.setWebhook(process.env.URI + process.env.WEBHOOK)
-
-require('http')
-  .createServer( bot.webhookCallback(process.env.WEBHOOK) )
-  .listen(process.env.PORT)
 
 // Google api integration section
 const {google} = require('googleapis')
@@ -32,14 +25,29 @@ let getImage = async (query) => {
     num: '1',
     safe: safe,
     searchType: 'image'
-  })
+  }).catch( err => {throw(err)} )
   return res.data.items[0].link
 }
 
 bot.command('/get', ctx => {
   let target = ctx.update.message.text.substr(5)
   getImage(target).then( image => {
-    ctx.replyWithPhoto(image).then(console.log)
-    ctx.reply(image)
+    ctx.replyWithPhoto(image).catch( (err) => {
+      console.error(err)
+      ctx.reply('Your image is too heavy')
+      ctx.reply( image )
+    })
   })
 })
+
+if (process.env.NODE_ENV == 'production'){
+  console.log('The webhook is at ' + process.env.URI + process.env.WEBHOOK)
+  require('http')
+  .createServer( bot.webhookCallback(process.env.WEBHOOK) )
+  .listen(process.env.PORT)
+
+  bot.telegram.setWebhook(process.env.URI + process.env.WEBHOOK)
+} else {
+  bot.telegram.setWebhook()
+  bot.startPolling()
+}
