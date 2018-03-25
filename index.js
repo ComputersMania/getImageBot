@@ -24,6 +24,7 @@ if (process.env.SAFE) {
 }
 
 let getImage = async (query) => {
+  console.log('My name is getimage I got ' + query)
   res = await listPromise(null, {
     key: process.env.GOOGLE_API_KEY,
     q: query,
@@ -42,7 +43,7 @@ bot.command('/get', ctx => {
   console.log(ctx.message)
   getImage(target).then( image => {
     ctx.replyWithPhoto(null, {
-      photo: image 
+      photo: image
     })
     console.log('Replied')
   })
