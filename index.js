@@ -47,6 +47,7 @@ bot.command('/get', ctx => {
   let target = ctx.update.message.text.substr(5)
   console.log(ctx.from.username + ' searched ' + target)
   getImage(target).then( image => {
+    cxt.reply(image)
     ctx.replyWithPhoto(image, {
       reply_to_message_id: ctx.message.message_id
     }).catch( (err) => {
