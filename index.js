@@ -29,6 +29,7 @@ if (process.env.SAFE) {
 }
 
 let getImage = async (query) => {
+  console.log('Search started')
   res = await listPromise({
     key: process.env.GOOGLE_API_KEY,
     q: query,
