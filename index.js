@@ -48,11 +48,11 @@ bot.command('/get', ctx => {
   console.log(ctx.from.username + ' searched ' + target)
   getImage(target).then( image => {
     ctx.replyWithPhoto(image, {
-      reply_to_message_id: ctx.message.message_id
+      //reply_to_message_id: ctx.message.message_id
     }).catch( (err) => {
       console.error(err)
       ctx.reply(image, {
-        reply_to_message_id: ctx.message.message_id
+        //reply_to_message_id: ctx.message.message_id
       })
     })
   })
