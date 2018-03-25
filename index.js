@@ -24,8 +24,7 @@ if (process.env.SAFE) {
 }
 
 let getImage = async (query) => {
-  console.log('My name is getimage I got ' + query)
-  res = await listPromise(null, {
+  res = await listPromise({
     key: process.env.GOOGLE_API_KEY,
     q: query,
     cx: process.env.CSE_CX,
