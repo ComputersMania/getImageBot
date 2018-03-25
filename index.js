@@ -10,11 +10,39 @@ require('http')
   .createServer( bot.webhookCallback(process.env.WEBHOOK) )
   .listen(process.env.PORT)
 
-//bot.use( ctx => {
-//  console.log(ctx.update.message.text)
-//})
+// Google api integration section
+const {google} = require('googleapis')
+const customsearch = google.customsearch('v1')
+const {promisify} = require('util')
+
+const listPromise = promisify(customsearch.cse.list)
+
+if (process.env.SAFE) {
+  var safe = process.env.SAFE
+} else {
+  var safe = 'off'
+}
+
+let getImage = async (query) => {
+  res = await listPromise({
+    key: process.env.GOOGLE_API_KEY,
+    q: query,
+    cx: process.env.CSE_CX,
+    imgSize: 'huge',
+    num: '1',
+    safe: safe,
+    searchType: 'image'
+  })
+  return res.data.items[0].link
+}
 
 bot.command('/get', ctx => {
   let target = ctx.update.message.text.substr(5)
-  ctx.reply( 'You are searching for ' + target )
+  console.log('Searched ' + target)
+  console.log(ctx.from)
+  getImage(target).then( image => {
+    ctx.replyWithPhoto(null, {
+      photo: image
+    })
+  })
 })
